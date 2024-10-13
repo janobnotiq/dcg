@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xodimlar ro'yxati</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .employee-list {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .employee {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 2px solid dodgerblue;
+            cursor: pointer;
+            margin-bottom: 25px;
+            transition: background-color 0.25s;
+        }
+
+        .employee:hover {
+            background-color: rgb(236, 236, 42);
+        }
+
+        .employee:last-child {
+            border-bottom: none;
+        }
+
+        .employee img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        .employee-details {
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+
+        .employee-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        .employee-position {
+            color: #555;
+        }
+
+        .employee-contact {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .employee-contact a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .employee-contact a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobil moslashuv */
+        @media (max-width: 600px) {
+            .employee {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .employee-contact {
+                text-align: left;
+                margin-top: 10px;
+            }
+        }
+
+        /* Hover holatidagi tugma stylingi */
+        a:hover {
+            color: red;
+        }
+        .to-home {
+            width: 40vh;
+            text-align: center;
+            font-weight: bold;
+            font-size: large;
+            padding: 10px;
+            border: 2px solid tomato;
+            border-radius: 2px;
+            color: black;
+            text-decoration: none;
+            transition: background-color 0.25s;
+        }
+
+        .to-home:hover {
+            background-color: tomato;
+            color: white;
+        }
+
+        .declaration-count {
+            background-color: #007BFF;
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-left: 20px;
+        }
+
+         /* Oylarni tanlash uchun select stylingi */
+         .month-select {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Xodimlar ro'yxati</h1>
+
+    <div class="month-select">
+        <form method="GET" action="{% url 'employees' %}">
+            <select id="month" name="month" onchange="this.form.submit()">
+                <option value="1" {% if current_month == 1 %}selected{% endif %}>Yanvar</option>
+                <option value="2" {% if current_month == 2 %}selected{% endif %}>Fevral</option>
+                <option value="3" {% if current_month == 3 %}selected{% endif %}>Mart</option>
+                <option value="4" {% if current_month == 4 %}selected{% endif %}>Aprel</option>
+                <option value="5" {% if current_month == 5 %}selected{% endif %}>May</option>
+                <option value="6" {% if current_month == 6 %}selected{% endif %}>Iyun</option>
+                <option value="7" {% if current_month == 7 %}selected{% endif %}>Iyul</option>
+                <option value="8" {% if current_month == 8 %}selected{% endif %}>Avgust</option>
+                <option value="9" {% if current_month == 9 %}selected{% endif %}>Sentabr</option>
+                <option value="10" {% if current_month == 10 %}selected{% endif %}>Oktabr</option>
+                <option value="11" {% if current_month == 11 %}selected{% endif %}>Noyabr</option>
+                <option value="12" {% if current_month == 12 %}selected{% endif %}>Dekabr</option>
+            </select>
+        </form>
+    </div>
+
+    <div class="employee-list">
+        {% for employee in employees %}
+        <div class="employee">
+            <!-- Xodim rasmi -->
+            <img src="/media/profile.jpg" alt="{{ employee.first_name }}">
+            
+            <!-- Xodim haqida tafsilotlar -->
+            <div class="employee-details">
+                <p class="employee-name">{{ employee.first_name }} {{employee.last_name}}</p>
+                <a href="{% url 'declarant-report' employee.id %}">Hisobot</a>
+            </div>
+            
+            <!-- Xodim bilan bog'lanish -->
+            <div class="employee-contact">
+                <p>Telegram: <a href="https://t.me/{{employee.username}}">{{ employee.username }}</a></p>
+                <p>Email: <a href="mailto:{{ employee.email }}">{{ employee.email }}</a></p>
+            </div>
+
+            <!-- Deklaratsiyalar soni -->
+            <div class="declaration-count">
+                {{employee.declaration_count}}
+            </div>
+        </div>
+        {% endfor %}
+        <a class="to-home" href="{% url 'home' %}">
+            Bosh sahifaga
+        </a>
+    </div>
+</body>
+</html>

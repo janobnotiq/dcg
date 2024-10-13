@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bosh sahifa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Background image URL to customize */
+        body {
+            background-image: url('/media/manzara.jpg');
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-cover bg-center bg-no-repeat bg-gray-100 text-gray-800 flex flex-col justify-center items-center h-screen">
+    <div class="navbar bg-gray-800 fixed top-0 w-full shadow-md">
+        <div class="max-w-screen-xl mx-auto flex justify-between items-center p-4">
+            {% if user.is_superuser %}
+                <div class="flex space-x-4">
+                    <a href="{% url 'employees' %}" class="text-white hover:bg-gray-700 px-4 py-2 rounded">Xodimlar</a>
+                    <a href="{% url 'companies' %}" class="text-white hover:bg-gray-700 px-4 py-2 rounded">Kompaniyalar</a>
+                    <a href="{% url 'admin:index' %}" class="text-white hover:bg-gray-700 px-4 py-2 rounded">Admin sahifasi</a>
+                </div>
+            {% else %}
+                <div class="flex space-x-4">
+                    <a href="{% url 'my-declarations' %}" class="text-white hover:bg-gray-700 px-4 py-2 rounded">Mening xizmatlarim</a>
+                    <a href="{% url 'in-process' %}" class="text-white hover:bg-gray-700 px-4 py-2 rounded">Jarayondagi deklaratsiyalar</a>
+                    <a href="{% url 'add-company' %}" class="text-white hover:bg-gray-700 px-4 py-2 rounded">Kompaniya qo'shish</a>
+                </div>
+            {% endif %}
+            <div class="flex items-center">
+                <span class="text-white mr-4">Xush kelibsiz, {{user.first_name}} {{user.last_name}}!</span>
+                <a href="{% url 'logout' %}" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">Tizimdan chiqish</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content pt-20 max-w-screen-md mx-auto text-center">
+        {% if not user.is_superuser %}
+            <div class="bg-white p-8 rounded-lg shadow-lg my-4">
+                <a href="{% url 'add-declaration' %}" class="block bg-blue-600 text-white px-6 py-3 rounded mb-4 hover:bg-blue-500 text-lg">Deklaratsiya qo'shish</a>
+                <a href="{% url 'add-contract' %}" class="block bg-blue-600 text-white px-6 py-3 rounded mb-4 hover:bg-blue-500 text-lg">Kontrakt qo'shish</a>
+                <a href="{% url 'add-dosmotr' %}" class="block bg-blue-600 text-white px-6 py-3 rounded mb-4 hover:bg-blue-500 text-lg">Dosmotr qo'shish</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

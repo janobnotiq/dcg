@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontrakt Muvaffaqiyatli Qo'shildi</title>
+    <style>
+        /* Umumiy body styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Navbar bo'limlari styling */
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+
+        /* Hover qilinganda rangni o'zgartirish */
+        .navbar a:hover {
+            background-color: #575757;
+        }
+
+        /* Foydalanuvchi ismi va tizimdan chiqish bo'limi */
+        .navbar .user-info {
+            float: right;
+        }
+
+        /* Sahifaning yuqorisidagi bo'sh joy (navbar joylashuvi uchun) */
+        .content {
+            padding-top: 60px;
+            text-align: center;
+        }
+
+        /* Mobil moslashuv */
+        @media (max-width: 600px) {
+            .navbar a {
+                float: none;
+                display: block;
+                text-align: left;
+            }
+        }
+
+        /* Sahifa markazidagi konteyner */
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* Asosiy sarlavha */
+        h1 {
+            color: #28a745;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Muvaffaqiyatli xabar */
+        p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        /* Boshqa sahifaga o'tish tugmasi */
+        a {
+            text-decoration: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 1rem;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        
+        
+        .navbuttons {
+            background-color: none;
+            transition: background-color 0.25s;
+        }
+        /* Qayta deklaratsiya qo'shish tugmasi uchun qo'shimcha rang */
+        .add-more-btn {
+            background-color: #28a745;
+            margin-left: 10px;
+        }
+        
+        .add-more-btn:hover {
+            background-color: #218838;
+        }
+        
+        /* background-color: #007BFF; */
+        /* Mobil moslashuv */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'my-declarations' %}" class="navbuttons">Mening xizmatlarim</a>
+        <a href="{% url 'in-process' %}" class="navbuttons">Jarayondagi deklaratsiyalar</a>
+        <a href="{% url 'add-company' %}" class="navbuttons">Kompaniya qo'shish</a>
+    </div>
+    <div class="container">
+        <h1>Muvaffaqiyatli!</h1>
+        <p>Sizning kontraktingiz muvaffaqiyatli qo'shildi.</p>
+        <a href="{% url 'home' %}" style="background-color: #007BFF;">Bosh sahifaga qaytish</a>
+        <a href="{% url 'add-contract' %}" class="add-more-btn">Yana kontrakt qo'shish</a>
+    </div>
+</body>
+</html>

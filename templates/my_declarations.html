@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mening Deklaratsiyalarim</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .declaration-list {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .declaration {
+            background-color: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .declaration h2 {
+            margin: 0 0 10px;
+            font-size: 1.5rem;
+            color: #007BFF;
+        }
+
+        .declaration p {
+            margin: 0;
+            color: #555;
+        }
+
+        .no-declarations {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #999;
+            margin-top: 50px;
+        }
+         /* Link tugmachalari stylingi */
+         a {
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: inline-block;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Hover holatidagi tugma stylingi */
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mening xizmatlarim</h1>
+
+    <div class="declaration-list">
+        <!-- Foydalanuvchining deklaratsiyalarini chiqarish -->
+        {% if declarations %}
+            {% for declaration in declarations %}
+                <div class="declaration">
+                    <p>{{declaration.number_gtd}}</p>
+                    <p>{{declaration.reference_gtd}}</p>
+                    <p>{{declaration.customs_mode}}</p>
+                    <b>{{ declaration.updated_at|date }}</b><br>
+                    <b>{{ declaration.updated_at|date:"H:i" }}</b>
+                    {% if declaration.status == "FINISHED" %}
+                        <p style="color: rgb(6, 243, 6); font-weight: bold;">{{declaration.status}}</p>
+                    {% else %}
+                        <p style="color: red;font-weight: bold;">{{declaration.status}}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-declarations">Sizda hech qanday deklaratsiya mavjud emas.</p>
+        {% endif %}
+        <a href="{% url 'home' %}">Bosh sahifaga</a>
+    </div>
+</body>
+</html>
