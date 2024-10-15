@@ -68,6 +68,36 @@
         a:hover {
             background-color: #0056b3;
         }
+
+        .declaration-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+
+    .declaration-table th, .declaration-table td {
+        padding: 12px 15px;
+        border: 1px solid #dddddd;
+    }
+
+    .declaration-table th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+
+    .declaration-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .declaration-table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .declaration-table td {
+        color: #555;
+    }
     </style>
 </head>
 <body>
@@ -75,15 +105,33 @@
     <h1>Dosmotrlar</h1>
 
     <div class="declaration-list">
-        <!-- Foydalanuvchining deklaratsiyalarini chiqarish -->
         {% if dosmotrs %}
-            {% for dosmotr in dosmotrs %}
-                <div class="declaration">
-                    <p>{{dosmotr.product}}</p>
-                    <b>{{ dosmotr.updated_at|date }}</b><br>
-                    <b>{{ dosmotr.updated_at|date:"H:i" }}</b>
-                </div>
-            {% endfor %}
+        <table class="declaration-table">
+            <thead>
+                <tr>
+                    <th>Tovar</th>
+                    <th>Og'irligi</th>
+                    <th>Transport raqami</th>
+                    <th>Omborga kirgan sana</th>
+                    <th>Ombordan chiqqan sana</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dosmotr in dosmotrs %}
+                <tr>
+                    <td>{{ dosmotr.product }}</td>
+                    <td>{{ dosmotr.weight }}</td>
+                    <td>{{ dosmotr.transport_number}}</td>
+                    <td>{{ dosmotr.arrived_date}}</td>
+                    <td>{{ dosmotr.leaving_date}}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">Hech qanday dosmotr topilmadi.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         {% else %}
             <p class="no-declarations">Sizda hech qanday dosmotr mavjud emas.</p>
         {% endif %}

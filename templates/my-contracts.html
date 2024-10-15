@@ -68,6 +68,35 @@
         a:hover {
             background-color: #0056b3;
         }
+        .declaration-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+
+    .declaration-table th, .declaration-table td {
+        padding: 12px 15px;
+        border: 1px solid #dddddd;
+    }
+
+    .declaration-table th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+
+    .declaration-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .declaration-table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .declaration-table td {
+        color: #555;
+    }
     </style>
 </head>
 <body>
@@ -75,16 +104,32 @@
     <h1>Kontraktlar</h1>
 
     <div class="declaration-list">
-        <!-- Foydalanuvchining deklaratsiyalarini chiqarish -->
         {% if contracts %}
+        <table class="declaration-table">
+            <thead>
+                <tr>
+                    <th>Qabul qiluvchi</th>
+                    <th>Tovar</th>
+                    <th>Tuzilgan sana</th>
+                    <th>Tashuvchi</th>
+                </tr>
+            </thead>
+            <tbody>
             {% for contract in contracts %}
-                <div class="declaration">
-                    <p>{{contract.product}}</p>
-                    <b>{{ contract.updated_at|date }}</b><br>
-                    <b>{{ contract.updated_at|date:"H:i" }}</b>
-                   
-                </div>
+            <tr>
+                <td>{{ contract.reciever }}</td>
+                <td>{{contract.product}}</td>
+                <td><b>{{ contract.updated_at|date }}</b></td>
+                <td>{{contract.carrier}}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Hech qanday kontrakt topilmadi.</td>
+            </tr>
             {% endfor %}
+            
+            </tbody>
+        </table>
         {% else %}
             <p class="no-declarations">Sizda hech qanday kontrakt mavjud emas.</p>
         {% endif %}
