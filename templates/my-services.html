@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mening Deklaratsiyalarim</title>
+    <title>Mening xizmatlarim</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -32,6 +32,9 @@
             border-radius: 5px;
             padding: 15px;
             margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .declaration h2 {
@@ -72,28 +75,19 @@
 </head>
 <body>
 
-    <h1>Deklaratsiyalar</h1>
+    <h1>Mening xizmatlarim</h1>
 
     <div class="declaration-list">
         <!-- Foydalanuvchining deklaratsiyalarini chiqarish -->
-        {% if declarations %}
-            {% for declaration in declarations %}
                 <div class="declaration">
-                    <p>{{declaration.number_gtd}}</p>
-                    <p>{{declaration.reference_gtd}}</p>
-                    <p>{{declaration.customs_mode}}</p>
-                    <b>{{ declaration.updated_at|date }}</b><br>
-                    <b>{{ declaration.updated_at|date:"H:i" }}</b>
-                    {% if declaration.status == "BOSILDI" %}
-                        <p style="color: rgb(6, 243, 6); font-weight: bold;">{{declaration.status}}</p>
-                    {% else %}
-                        <p style="color: red;font-weight: bold;">{{declaration.status}}</p>
-                    {% endif %}
+                    <a href="{% url 'my_declarations' %}">Deklaratsiyalar</a>
                 </div>
-            {% endfor %}
-        {% else %}
-            <p class="no-declarations">Sizda hech qanday deklaratsiya mavjud emas.</p>
-        {% endif %}
+                <div class="declaration">
+                    <a href="{% url 'my_contracts' %}">Kontraktlar</a>
+                </div>
+                <div class="declaration">
+                    <a href="{% url 'my_dosmotrs' %}">Dosmotrlar</a>
+                </div>
         <a href="{% url 'home' %}">Bosh sahifaga</a>
     </div>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mening Deklaratsiyalarim</title>
+    <title>Mening Kontraktlarim</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -72,27 +72,21 @@
 </head>
 <body>
 
-    <h1>Deklaratsiyalar</h1>
+    <h1>Kontraktlar</h1>
 
     <div class="declaration-list">
         <!-- Foydalanuvchining deklaratsiyalarini chiqarish -->
-        {% if declarations %}
-            {% for declaration in declarations %}
+        {% if contracts %}
+            {% for contract in contracts %}
                 <div class="declaration">
-                    <p>{{declaration.number_gtd}}</p>
-                    <p>{{declaration.reference_gtd}}</p>
-                    <p>{{declaration.customs_mode}}</p>
-                    <b>{{ declaration.updated_at|date }}</b><br>
-                    <b>{{ declaration.updated_at|date:"H:i" }}</b>
-                    {% if declaration.status == "BOSILDI" %}
-                        <p style="color: rgb(6, 243, 6); font-weight: bold;">{{declaration.status}}</p>
-                    {% else %}
-                        <p style="color: red;font-weight: bold;">{{declaration.status}}</p>
-                    {% endif %}
+                    <p>{{contract.product}}</p>
+                    <b>{{ contract.updated_at|date }}</b><br>
+                    <b>{{ contract.updated_at|date:"H:i" }}</b>
+                   
                 </div>
             {% endfor %}
         {% else %}
-            <p class="no-declarations">Sizda hech qanday deklaratsiya mavjud emas.</p>
+            <p class="no-declarations">Sizda hech qanday kontrakt mavjud emas.</p>
         {% endif %}
         <a href="{% url 'home' %}">Bosh sahifaga</a>
     </div>

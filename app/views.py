@@ -1,5 +1,4 @@
 from datetime import datetime
-from django.utils import timezone
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
@@ -10,7 +9,7 @@ from django.views.generic.edit import UpdateView
 from django.views import View
 
 from .forms import DeclarationForm, CompanyForm
-from .models import Declaration, Company
+from .models import Declaration, Company, Contract, Dosmotr
 
 # bosh sahifa uchun view
 @login_required
@@ -61,8 +60,11 @@ def add_company(request):
 
 # xodimning bugungi qilgan deklaratsiyalari
 @login_required
+def my_services_view(request):
+    return render(request,"my-services.html")
+
+@login_required
 def declaration_list_view(request):
-    today = timezone.now().date()
     declarations = Declaration.objects.filter(
         declarant=request.user,
         )
@@ -169,3 +171,14 @@ class DeclarationFilterView(View):
             "start_date": start_date.date(),
             "end_date": end_date.date(),
         })
+
+
+@login_required
+def my_contracts_view(request):
+    contracts = Contract.objects.filter(declarant=request.user).all()
+    return render(request,"my-contracts.html",{"contracts":contracts})
+
+@login_required
+def my_dosmotrs_view(request):
+    dosmotrs = Dosmotr.objects.filter(declarant=request.user).all()
+    return render(request,"my-dosmotrs.html",{"dosmotrs":dosmotrs})
