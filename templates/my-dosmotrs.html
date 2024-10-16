@@ -127,7 +127,7 @@
                     <td>{{ dosmotr.arrived_date}}</td>
                     <td>{{ dosmotr.leaving_date}}</td>
                     <td><a href="" style="background-color: lightgreen;">Tahrirlash</a></td>
-                    <td><a href="{% url 'delete-dosmotr' dosmotr.id %}" style="background-color: red;">O'chirish</a></td>
+                    <td><a href="{% url 'delete-dosmotr' dosmotr.id %}" style="background-color: red;" onclick="return confirm('Siz rostdan ham ushbu dosmotrni o\'chirmoqchimisiz?');">O'chirish</a></td>
                 </tr>
                 {% empty %}
                 <tr>

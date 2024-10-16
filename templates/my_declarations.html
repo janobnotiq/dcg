@@ -131,7 +131,7 @@
                         <td style="color: red;">{{ declaration.status}}</td>
                         {% endif %}
                         <td><a href="{% url 'update-declaration' declaration.id %}" style="background-color: lightgreen;">Tahrirlash</a></td>
-                        <td><a href="{% url 'delete-declaration' declaration.id %}" style="background-color: red;">O'chirish</a></td>
+                        <td><a href="{% url 'delete-declaration' declaration.id %}" style="background-color: red;" onclick="return confirm('Siz rostdan ham ushbu deklaratsiyani o\'chirmoqchimisiz?');">O'chirish</a></td>
                     </tr>
                     {% empty %}
                     <tr>
