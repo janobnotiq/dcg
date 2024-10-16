@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView
 from django.views import View
@@ -182,3 +182,24 @@ def my_contracts_view(request):
 def my_dosmotrs_view(request):
     dosmotrs = Dosmotr.objects.filter(declarant=request.user).all()
     return render(request,"my-dosmotrs.html",{"dosmotrs":dosmotrs})
+
+@login_required
+def delete_declaration(request,pk):
+    declaration = get_object_or_404(Declaration,id=pk,declarant=request.user)
+    if declaration is not None:
+        declaration.delete()
+    return redirect('my_declarations')
+
+@login_required
+def delete_dosmotr(request,pk):
+    dosmotr = get_object_or_404(Dosmotr,id=pk,declarant=request.user)
+    if dosmotr is not None:
+        dosmotr.delete()
+    return redirect('my_dosmotrs')
+
+@login_required
+def delete_contract(request,pk):
+    contract = get_object_or_404(Contract,id=pk,declarant=request.user)
+    if contract is not None:
+        contract.delete()
+    return redirect('my_contracts')

@@ -114,6 +114,8 @@
                     <th>Transport raqami</th>
                     <th>Omborga kirgan sana</th>
                     <th>Ombordan chiqqan sana</th>
+                    <th>Tahrirlash</th>
+                    <th>O'chirish</th>
                 </tr>
             </thead>
             <tbody>
@@ -124,6 +126,8 @@
                     <td>{{ dosmotr.transport_number}}</td>
                     <td>{{ dosmotr.arrived_date}}</td>
                     <td>{{ dosmotr.leaving_date}}</td>
+                    <td><a href="" style="background-color: lightgreen;">Tahrirlash</a></td>
+                    <td><a href="{% url 'delete-dosmotr' dosmotr.id %}" style="background-color: red;">O'chirish</a></td>
                 </tr>
                 {% empty %}
                 <tr>

@@ -4,6 +4,7 @@ from django.contrib.auth import views as auth_views
 from .views import logout_view, add_declaration, declaration_success_view\
     , add_company, declaration_list_view, in_process_declarations\
     , employees_list, companies_list, my_services_view, my_contracts_view,my_dosmotrs_view \
+    ,delete_contract,delete_declaration,delete_dosmotr\
     , DeclarationFilterView, DeclarationUpdateView, DeclarationReportView
 
 
@@ -20,6 +21,9 @@ urlpatterns = [
     path("my-services/",my_services_view, name="my-declarations"),
     path("in-process-declarations/",in_process_declarations, name="in-process"),
     path("update-declaration/<int:pk>/",DeclarationUpdateView.as_view(), name="update-declaration"),
+    path("delete-declaration/<int:pk>/",delete_declaration, name="delete-declaration"),
+    path("delete-dosmotr/<int:pk>/",delete_dosmotr, name="delete-dosmotr"),
+    path("delete-contract/<int:pk>/",delete_contract, name="delete-contract"),
     
     # for director
     path("employees/",employees_list, name="employees"),

@@ -114,6 +114,8 @@
                         <th>Tuzilgan sana</th>
                         <th>Rejimi</th>
                         <th>Status</th>
+                        <th>Tahrirlash</th>
+                        <th>O'chirish</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -124,10 +126,12 @@
                         <td>{{ declaration.date_recorded}}</td>
                         <td>{{ declaration.customs_mode}}</td>
                         {% if declaration.status == "BOSILDI" %}
-                            <td style="color: green;">{{ declaration.status}}</td>
+                        <td style="color: green;">{{ declaration.status}}</td>
                         {% else %}
-                            <td style="color: red;">{{ declaration.status}}</td>
+                        <td style="color: red;">{{ declaration.status}}</td>
                         {% endif %}
+                        <td><a href="{% url 'update-declaration' declaration.id %}" style="background-color: lightgreen;">Tahrirlash</a></td>
+                        <td><a href="{% url 'delete-declaration' declaration.id %}" style="background-color: red;">O'chirish</a></td>
                     </tr>
                     {% empty %}
                     <tr>

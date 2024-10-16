@@ -112,6 +112,8 @@
                     <th>Tovar</th>
                     <th>Tuzilgan sana</th>
                     <th>Tashuvchi</th>
+                    <th>Tahrirlash</th>
+                    <th>O'chirish</th>
                 </tr>
             </thead>
             <tbody>
@@ -121,6 +123,8 @@
                 <td>{{contract.product}}</td>
                 <td><b>{{ contract.updated_at|date }}</b></td>
                 <td>{{contract.carrier}}</td>
+                <td><a href="#" style="background-color: lightgreen;">Tahrirlash</a></td>
+                <td><a href="{% url 'delete-contract' contract.id %}" style="background-color: red;">O'chirish</a></td>
             </tr>
             {% empty %}
             <tr>
