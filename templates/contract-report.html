@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hisobot: {{ declarant_id }}</title>
+    <title>Hisobot: kontrakt</title>
     <style>
     body {
         font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
     }
 
     .container {
-        width: 800px;
+        max-width: 800px;
         margin: 20px auto;
         padding: 20px;
         background: white;
@@ -101,7 +101,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Deklarant {{declarant.first_name}} {{declarant.last_name}} tuzgan deklaratsiyalar</h1>
+        <h1>Deklarant {{declarant.first_name}} {{declarant.last_name}} tuzgan kontraktlar</h1>
         
         <form action="{% url 'filter-report' declarant.username %}" method="post">
             {% csrf_token %}
@@ -116,10 +116,10 @@
         {% if user.is_superuser %}
             <a href="{% url 'employees' %}" class="btn">Ortga</a>
         {% else %}
-            <a href="{% url 'my_declarations' %}" class="btn">Ortga</a>
+            <a href="{% url 'my_contracts' %}" class="btn">Ortga</a>
         {% endif %}
 
-        <h2>{{ count }} ta deklaratsiya topildi</h2>
+        <h2>{{ count }} ta kontrakt topildi</h2>
 
         <table class="declaration-table">
             <thead>
@@ -143,7 +143,7 @@
                 {% endfor %}
             </tbody>
         </table>
-       
+        
     </div>
 </body>
 </html>

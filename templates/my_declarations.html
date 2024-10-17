@@ -123,6 +123,19 @@
     <h1>Deklaratsiyalar</h1>
 
     <div class="declaration-list">
+        <a href="{% url 'home' %}">Bosh sahifaga</a>
+        <a href="{% url 'declarant-report' request.user.id %}">Batafsil ko'rish</a>
+        <form method="GET" action="{% url 'my_declarations' %}">
+            <select id="mode" name="mode" onchange="this.form.submit()">
+                <option value="all" {% if mode == "None" %}selected{% endif %}>Hammasi</option>
+                <option value="IM70" {% if mode == "IM70" %}selected{% endif %}>IM 70</option>
+                <option value="IM40" {% if mode == "IM40" %}selected{% endif %}>IM 40</option>
+                <option value="ND40" {% if mode == "ND40" %}selected{% endif %}>ND 40</option>
+                <option value="EK10" {% if mode == "EK10" %}selected{% endif %}>EK 10</option>
+                <option value="IM74" {% if mode == "IM74" %}selected{% endif %}>IM 74</option>
+            </select>
+        </form>
+        <p>Joriy oyda {{count}} ta</p>
         {% if declarations %}
             <table class="declaration-table">
                 <thead>
@@ -161,7 +174,7 @@
         {% else %}
             <p class="no-declarations">Sizda hech qanday deklaratsiya mavjud emas.</p>
         {% endif %}
-        <a href="{% url 'home' %}">Bosh sahifaga</a>
+        
     </div>
 </body>
 </html>

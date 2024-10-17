@@ -121,6 +121,8 @@
     <h1>Kontraktlar</h1>
 
     <div class="declaration-list">
+        <a href="{% url 'home' %}">Bosh sahifaga</a>
+        <a href="">Batafsil ko'rish</a>
         {% if contracts %}
         <table class="declaration-table">
             <thead>
@@ -154,7 +156,6 @@
         {% else %}
             <p class="no-declarations">Sizda hech qanday kontrakt mavjud emas.</p>
         {% endif %}
-        <a href="{% url 'home' %}">Bosh sahifaga</a>
     </div>
 </body>
 </html>

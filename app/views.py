@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.utils import timezone
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
@@ -65,13 +66,34 @@ def my_services_view(request):
 
 @login_required
 def declaration_list_view(request):
-    declarations = Declaration.objects.filter(
-        declarant=request.user,
+    mode = request.GET.get('mode')
+    print(mode)
+    if mode is None or mode == "all":
+        declarations = Declaration.objects.filter(
+            declarant=request.user,
+            )
+    else:
+        declarations = Declaration.objects.filter(
+            declarant=request.user,
+            customs_mode=mode
         )
+
+    count = declarations.filter(
+        updated_at__month=timezone.now().month,
+        updated_at__year=timezone.now().year).count()
+
     if declarations.count() > 20:
         declarations = declarations[:20]
     
-    return render(request,"my_declarations.html",{"declarations":declarations})
+    return render(
+        request,
+        "my_declarations.html",
+        {
+            "declarations":declarations,
+            "mode":mode,
+            "count":count
+            }
+        )
 
 # jarayondagi deklaratsiyalar
 @login_required
@@ -152,9 +174,11 @@ class DeclarationFilterView(View):
         end_date = request.POST.get('end_date')
         if isinstance(start_date, str):
             start_date = datetime.fromisoformat(start_date)
+            start_date = timezone.make_aware(start_date, timezone.get_current_timezone())
 
         if isinstance(end_date, str):
             end_date = datetime.fromisoformat(end_date)
+            end_date = timezone.make_aware(end_date, timezone.get_current_timezone())
 
         # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
         declarations = Declaration.objects.filter(
@@ -203,3 +227,22 @@ def delete_contract(request,pk):
     if contract is not None:
         contract.delete()
     return redirect('my_contracts')
+
+class ContractReportView(View):
+    def get(self, request, declarant_id):
+        # Foydalanuvchi ID'si bilan deklaratsiyalarni olish
+        declarant = User.objects.filter(id=declarant_id).last()
+        contracts = Contract.objects.filter(declarant=declarant).all()
+        from datetime import datetime
+
+        for contract in contracts:
+            if isinstance(contract.updated_at, str):
+                contract.updated_at = datetime.fromisoformat(contract.updated_at)
+            else:
+                contract.updated_at = contract.updated_at  # Agar bu allaqachon datetime bo'lsa
+
+        return render(request, 'declarant-report.html', {
+            'contracts': contracts,
+            'count': contracts.count(),
+            'declarant': declarant,
+        })

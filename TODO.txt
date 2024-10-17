@@ -1,0 +1,4 @@
+1. ND 40 va IM70 uchun endpoint
+2. Filterlar kontrakt va dosmotr uchun
+3. Kompaniya uchun filtrlar
+4. Telegram bot
