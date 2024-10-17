@@ -200,12 +200,14 @@ class DeclarationFilterView(View):
 @login_required
 def my_contracts_view(request):
     contracts = Contract.objects.filter(declarant=request.user).all()
-    return render(request,"my-contracts.html",{"contracts":contracts})
+    count = Dosmotr.objects.filter(declarant=request.user,updated_at__month=timezone.now().month).count()
+    return render(request,"my-contracts.html",{"contracts":contracts,"count":count})
 
 @login_required
 def my_dosmotrs_view(request):
     dosmotrs = Dosmotr.objects.filter(declarant=request.user).all()
-    return render(request,"my-dosmotrs.html",{"dosmotrs":dosmotrs})
+    count = Dosmotr.objects.filter(declarant=request.user,updated_at__month=timezone.now().month).count()
+    return render(request,"my-dosmotrs.html",{"dosmotrs":dosmotrs,"count":count})
 
 @login_required
 def delete_declaration(request,pk):
@@ -241,8 +243,106 @@ class ContractReportView(View):
             else:
                 contract.updated_at = contract.updated_at  # Agar bu allaqachon datetime bo'lsa
 
-        return render(request, 'declarant-report.html', {
+        return render(request, 'contract-report.html', {
             'contracts': contracts,
             'count': contracts.count(),
             'declarant': declarant,
         })
+    
+
+class ContractFilterView(View):
+    def post(self, request, declarant_id):
+        declarant = User.objects.filter(id=declarant_id).last()
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        if isinstance(start_date, str):
+            start_date = datetime.fromisoformat(start_date)
+            start_date = timezone.make_aware(start_date, timezone.get_current_timezone())
+
+        if isinstance(end_date, str):
+            end_date = datetime.fromisoformat(end_date)
+            end_date = timezone.make_aware(end_date, timezone.get_current_timezone())
+
+        # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
+        contracts = Contract.objects.filter(
+            declarant=declarant,
+            updated_at__gte=start_date,
+            updated_at__lte=end_date,
+        )
+
+        return render(request, 'contract-filter.html', {
+            'contracts': contracts,
+            'count': contracts.count(),
+            'declarant': declarant,
+            "start_date": start_date.date(),
+            "end_date": end_date.date(),
+        })
+    
+
+class DosmotrReportView(View):
+    def get(self, request, declarant_id):
+        # Foydalanuvchi ID'si bilan deklaratsiyalarni olish
+        declarant = User.objects.filter(id=declarant_id).last()
+        dosmotrs = Dosmotr.objects.filter(declarant=declarant).all()
+        from datetime import datetime
+
+        for dosmotr in dosmotrs:
+            if isinstance(dosmotr.updated_at, str):
+                dosmotr.updated_at = datetime.fromisoformat(dosmotr.updated_at)
+            else:
+                dosmotr.updated_at = dosmotr.updated_at  # Agar bu allaqachon datetime bo'lsa
+
+        return render(request, 'dosmotr-report.html', {
+            'dosmotrs': dosmotrs,
+            'count': dosmotrs.count(),
+            'declarant': declarant,
+        })
+    
+
+class DosmotrFilterView(View):
+    def post(self, request, declarant_id):
+        declarant = User.objects.filter(id=declarant_id).last()
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        if isinstance(start_date, str):
+            start_date = datetime.fromisoformat(start_date)
+            start_date = timezone.make_aware(start_date, timezone.get_current_timezone())
+
+        if isinstance(end_date, str):
+            end_date = datetime.fromisoformat(end_date)
+            end_date = timezone.make_aware(end_date, timezone.get_current_timezone())
+
+        # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
+        dosmotrs = Dosmotr.objects.filter(
+            declarant=declarant,
+            updated_at__gte=start_date,
+            updated_at__lte=end_date,
+        )
+
+        return render(request, 'dosmotr-filter.html', {
+            'dosmotrs': dosmotrs,
+            'count': dosmotrs.count(),
+            'declarant': declarant,
+            "start_date": start_date.date(),
+            "end_date": end_date.date(),
+        })
+    
+
+def employee_report(request,username):
+    employee = get_object_or_404(User,username=username)
+    selected_month = request.GET.get('month',timezone.now().month)
+    declaration_count = Declaration.objects.filter(declarant=employee,updated_at__month=selected_month).count()
+    contract_count = Contract.objects.filter(declarant=employee,updated_at__month=selected_month).count()
+    dosmotr_count = Dosmotr.objects.filter(declarant=employee,updated_at__month=selected_month).count()
+
+    return render(
+        request,
+        "employee-report.html",
+        {
+            "declaration_count":declaration_count,
+            "contract_count":contract_count,
+            "dosmotr_count":dosmotr_count,
+            "employee":employee,
+            "month":selected_month
+        }
+    )

@@ -4,8 +4,9 @@ from django.contrib.auth import views as auth_views
 from .views import logout_view, add_declaration, declaration_success_view\
     , add_company, declaration_list_view, in_process_declarations\
     , employees_list, companies_list, my_services_view, my_contracts_view,my_dosmotrs_view \
-    ,delete_contract,delete_declaration,delete_dosmotr\
-    , DeclarationFilterView, DeclarationUpdateView, DeclarationReportView
+    ,delete_contract,delete_declaration,delete_dosmotr, employee_report\
+    , DeclarationFilterView, DeclarationUpdateView, DeclarationReportView,ContractReportView \
+    ,ContractFilterView, DosmotrReportView, DosmotrFilterView
 
 
 urlpatterns = [
@@ -27,7 +28,12 @@ urlpatterns = [
     
     # for director
     path("employees/",employees_list, name="employees"),
+    path("employee-report/<str:username>/",employee_report, name="employee-report"),
     path("companies/", companies_list, name="companies"),
     path("declarant-report/<int:declarant_id>/", DeclarationReportView.as_view(), name="declarant-report"),
     path("declarant-report/<str:username>/", DeclarationFilterView.as_view(), name="filter-report"),
+    path("contract-report/<int:declarant_id>/", ContractReportView.as_view(), name="contract-report"),
+    path("contract-filter/<int:declarant_id>/", ContractFilterView.as_view(), name="contract-filter"),
+    path("dosmotr-report/<int:declarant_id>/", DosmotrReportView.as_view(), name="dosmotr-report"),
+    path("dosmotr-filter/<int:declarant_id>/", DosmotrFilterView.as_view(), name="dosmotr-filter"),
 ]

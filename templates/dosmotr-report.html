@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hisobot: kontrakt</title>
+    <title>Hisobot: dosmotr</title>
     <style>
     body {
         font-family: Arial, sans-serif;
@@ -101,9 +101,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>Deklarant {{declarant.first_name}} {{declarant.last_name}} tuzgan kontraktlar</h1>
+        <h1>Deklarant {{declarant.first_name}} {{declarant.last_name}} tuzgan dosmotrlar</h1>
         
-        <form action="{% url 'contract-filter' declarant.id %}" method="post">
+        <form action="{% url 'dosmotr-filter' declarant.id %}" method="post">
             {% csrf_token %}
             <label for="start_date">Boshlanish sanasi:</label>
             <input type="date" name="start_date" id="start_date" required>
@@ -116,31 +116,33 @@
         {% if user.is_superuser %}
             <a href="{% url 'employees' %}" class="btn">Ortga</a>
         {% else %}
-            <a href="{% url 'my_contracts' %}" class="btn">Ortga</a>
+            <a href="{% url 'my_dosmotrs' %}" class="btn">Ortga</a>
         {% endif %}
 
-        <h2>{{ count }} ta kontrakt topildi</h2>
+        <h2>{{ count }} ta dosmotr topildi</h2>
 
         <table class="declaration-table">
             <thead>
                 <tr>
                     <th>Tovar</th>
-                    <th>Kontrakt raqami</th>
-                    <th>Qabul qiluvchi</th>
-                    <th>Qayd etilgan sana</th>
+                    <th>Og'irligi</th>
+                    <th>Transport raqami</th>
+                    <th>Omborga kirgan sana</th>
+                    <th>Ombordan chiqqan sana</th>
                 </tr>
             </thead>
             <tbody>
-                {% for contract in contracts %}
+                {% for dosmotr in dosmotrs %}
                 <tr>
-                    <td>{{ contract.product }}</td>
-                    <td>{{ contract.contract_no }}</td>
-                    <td>{{ contract.reciever }}</td>
-                    <td>{{ contract.updated_at|date:"d-F Y, H:i" }}</td>
+                    <td>{{ dosmotr.product }}</td>
+                    <td>{{ dosmotr.weight }}</td>
+                    <td>{{ dosmotr.transport_number}}</td>
+                    <td>{{ dosmotr.arrived_date}}</td>
+                    <td>{{ dosmotr.leaving_date}}</td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4">Hech qanday kontrakt topilmadi.</td>
+                    <td colspan="5">Hech qanday dosmotr topilmadi.</td>
                 </tr>
                 {% endfor %}
             </tbody>

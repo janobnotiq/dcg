@@ -161,6 +161,9 @@
     <h1>Dosmotrlar</h1>
 
     <div class="declaration-list">
+        <p>Ushbu oyda <b>{{count}}</b> ta dosmotr</p>
+        <a href="{% url 'home' %}">Bosh sahifaga</a>
+        <a href="{% url 'dosmotr-report' user.id %}">Batafsil ko'rish</a>
         {% if dosmotrs %}
         <table class="declaration-table">
             <thead>
@@ -195,7 +198,7 @@
         {% else %}
             <p class="no-declarations">Sizda hech qanday dosmotr mavjud emas.</p>
         {% endif %}
-        <a href="{% url 'home' %}">Bosh sahifaga</a>
+        
     </div>
 </body>
 </html>

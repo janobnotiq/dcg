@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from root.models import BaseModel
@@ -17,36 +17,36 @@ class Company(BaseModel):
     # har bir kompaniyaning oylik deklaratsiyalari sonini hisoblash
     def declaration_count(self,month=None):
         if month is None:
-            month = datetime.now().month
+            month = timezone.now().month
         
         # Tanlangan oydagi deklaratsiyalarni sanash (updated_at bo'yicha filtrlash)
         return Declaration.objects.filter(
             reciever=self,               # `self` - bu kompaniya
             status=Declaration.Status.FINISHED,
             updated_at__month=month,      # `updated_at` bo'yicha oy filtr
-            updated_at__year=datetime.today().year,
+            updated_at__year=timezone.now().year,
         ).count()
     
     def contract_count(self,month=None):
         if month is None:
-            month = datetime.now().month
+            month = timezone.now().month
         
         # Tanlangan oydagi deklaratsiyalarni sanash (updated_at bo'yicha filtrlash)
         return Contract.objects.filter(
             reciever=self,               # `self` - bu kompaniya
             updated_at__month=month,      # `updated_at` bo'yicha oy filtr
-            updated_at__year=datetime.today().year,
+            updated_at__year=timezone.now().year,
         ).count()
     
     def dosmotr_count(self,month=None):
         if month is None:
-            month = datetime.now().month
+            month = timezone.now().month
         
         # Tanlangan oydagi deklaratsiyalarni sanash (updated_at bo'yicha filtrlash)
         return Dosmotr.objects.filter(
             reciever=self,               # `self` - bu kompaniya
             updated_at__month=month,      # `updated_at` bo'yicha oy filtr
-            updated_at__year=datetime.today().year,
+            updated_at__year=timezone.now().year,
         ).count()
 
     class Meta:
@@ -93,14 +93,14 @@ class Declaration(BaseModel):
 def declaration_count(self, month=None):
     # Hozirgi oyni olish (agar hech narsa berilmagan bo'lsa)
     if month is None:
-        month = datetime.now().month
+        month = timezone.now().month
     
     # Tanlangan oydagi deklaratsiyalarni sanash (updated_at bo'yicha filtrlash)
     return Declaration.objects.filter(
         declarant=self,               # `self` - bu xodim (user)
         status=Declaration.Status.FINISHED,
         updated_at__month=month,      # `updated_at` bo'yicha oy filtr
-        updated_at__year=datetime.today().year,
+        updated_at__year=timezone.now().year,
     ).count()
 
 # Methodni User modeliga qo'shamiz

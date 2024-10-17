@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hisobot: kontrakt</title>
-    <style>
-    body {
+<title>Filtrlangan kontraktlar</title>
+<style>
+     body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
@@ -33,25 +28,7 @@
         color: #555;
     }
 
-    form {
-        margin-bottom: 20px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-
-    input[type="date"], input[type="number"] {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
+    
     .btn {
         background-color: #007bff;
         color: white;
@@ -66,7 +43,7 @@
         background-color: #0056b3;
     }
 
-    .declaration-table {
+        .declaration-table {
         width: 100%;
         border-collapse: collapse;
         margin: 20px 0;
@@ -96,32 +73,14 @@
         color: #555;
     }
 
+</style>
+<div class="container">
+    <h1>Deklarant {{declarant.first_name}} {{declarant.last_name}} tuzgan kontraktlar</h1>
 
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Deklarant {{declarant.first_name}} {{declarant.last_name}} tuzgan kontraktlar</h1>
-        
-        <form action="{% url 'contract-filter' declarant.id %}" method="post">
-            {% csrf_token %}
-            <label for="start_date">Boshlanish sanasi:</label>
-            <input type="date" name="start_date" id="start_date" required>
-            
-            <label for="end_date">Tugash sanasi:</label>
-            <input type="date" name="end_date" id="end_date" required>
-            
-            <button type="submit" class="btn">Filtrlash</button>
-        </form>
-        {% if user.is_superuser %}
-            <a href="{% url 'employees' %}" class="btn">Ortga</a>
-        {% else %}
-            <a href="{% url 'my_contracts' %}" class="btn">Ortga</a>
-        {% endif %}
-
-        <h2>{{ count }} ta kontrakt topildi</h2>
-
-        <table class="declaration-table">
+    <h2>{{start_date}} va {{end_date}} oralig'ida {{ count }} ta kontrakt topildi</h2>
+    <a href="{% url 'contract-report' declarant.id %}" class="btn">Ortga</a>
+    
+    <table class="declaration-table">
             <thead>
                 <tr>
                     <th>Tovar</th>
@@ -145,7 +104,6 @@
                 {% endfor %}
             </tbody>
         </table>
+
         
-    </div>
-</body>
-</html>
+</div>

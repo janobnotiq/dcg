@@ -59,6 +59,7 @@
         }
 
         .employee-name {
+            text-decoration: none;
             font-size: 1.2rem;
             font-weight: bold;
             color: #007BFF;
@@ -123,8 +124,8 @@
             color: white;
             font-weight: bold;
             border-radius: 50%;
-            width: 70px;
-            height: 70px;
+            width: 110px;
+            height: 110px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -178,7 +179,7 @@
             
             <!-- Xodim haqida tafsilotlar -->
             <div class="employee-details">
-                <p class="employee-name">{{ employee.first_name }} {{employee.last_name}}</p>
+                <a class="employee-name" href="{% url 'employee-report' employee.username %}">{{ employee.first_name }} {{employee.last_name}}</a>
             </div>
             
             <!-- Xodim bilan bog'lanish -->

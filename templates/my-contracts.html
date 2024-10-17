@@ -121,8 +121,9 @@
     <h1>Kontraktlar</h1>
 
     <div class="declaration-list">
+        <p>Ushbu oyda <b>{{count}}</b> ta kontrakt</p>
         <a href="{% url 'home' %}">Bosh sahifaga</a>
-        <a href="">Batafsil ko'rish</a>
+        <a href="{% url 'contract-report' user.pk %}">Batafsil ko'rish</a>
         {% if contracts %}
         <table class="declaration-table">
             <thead>
