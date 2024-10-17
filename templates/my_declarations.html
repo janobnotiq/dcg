@@ -18,7 +18,7 @@
         }
 
         .declaration-list {
-            max-width: 800px;
+            width: 800px;
             margin: 0 auto;
             background-color: #fff;
             padding: 20px;
@@ -98,6 +98,24 @@
     .declaration-table td {
         color: #555;
     }
+
+    .update-button {
+        background-color: green;
+        transition: background-color 0.25s;
+    }
+
+    .update-button:hover {
+        background-color: rgb(13, 74, 13);
+    }
+
+    .delete-button {
+        background-color: rgb(223, 16, 16);
+        transition: background-color 0.25s;
+    }
+
+    .delete-button:hover {
+        background-color: rgb(116, 8, 8);
+    }
     </style>
 </head>
 <body>
@@ -130,8 +148,8 @@
                         {% else %}
                         <td style="color: red;">{{ declaration.status}}</td>
                         {% endif %}
-                        <td><a href="{% url 'update-declaration' declaration.id %}" style="background-color: lightgreen;">Tahrirlash</a></td>
-                        <td><a href="{% url 'delete-declaration' declaration.id %}" style="background-color: red;" onclick="return confirm('Siz rostdan ham ushbu deklaratsiyani o\'chirmoqchimisiz?');">O'chirish</a></td>
+                        <td><a class="update-button" href="{% url 'update-declaration' declaration.id %}">Tahrirlash</a></td>
+                        <td><a class="delete-button" href="{% url 'delete-declaration' declaration.id %}" onclick="return confirm('Siz rostdan ham ushbu deklaratsiyani o\'chirmoqchimisiz?');">O'chirish</a></td>
                     </tr>
                     {% empty %}
                     <tr>

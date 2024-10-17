@@ -22,7 +22,7 @@ class DeclarationForm(forms.ModelForm):
         widgets = {
             'date_recorded': forms.DateInput(attrs={
                 'type': 'date',  # HTML5 type date, kalendardan tanlash uchun
-            }),
+            },format='%Y-%m-%d'),
         }
 
 

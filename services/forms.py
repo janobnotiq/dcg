@@ -18,7 +18,7 @@ class ContractForm(forms.ModelForm):
         widgets = {
             'date_recorded': forms.DateInput(attrs={
                 'type': 'date',  # HTML5 type date, kalendardan tanlash uchun
-            }),
+            },format='%Y-%m-%d'),
         }
 
 
@@ -36,10 +36,16 @@ class DosmotrForm(forms.ModelForm):
 
         widgets = {
             'arrived_date': forms.DateInput(attrs={
-                'type': 'date',  # HTML5 type date, kalendardan tanlash uchun
-            }),
+                'type': 'date', # HTML5 type date, kalendardan tanlash uchun
+            }, format='%Y-%m-%d'),
             'leaving_date': forms.DateInput(attrs={
                 'type': 'date',  # HTML5 type date, kalendardan tanlash uchun
-            }),
+            },format='%Y-%m-%d'),
         }
+
+        def __init__(self, *args, **kwargs):
+            super(DosmotrForm, self).__init__(*args, **kwargs)
+            self.fields['arrived_date'].input_formats = ['%Y-%m-%d']
+            self.fields['leaving_date'].input_formats = ['%Y-%m-%d']
+
 

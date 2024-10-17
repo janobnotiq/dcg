@@ -67,11 +67,11 @@ class Declaration(BaseModel):
         IM74 = "IM74", "IM 74"
         EK10 = "EK10", "EK 10"
 
-    customs_mode = models.CharField(max_length=10,choices=Modes.choices)
+    customs_mode = models.CharField(max_length=10,choices=Modes.choices, verbose_name="Rejimi")
     declarant = models.ForeignKey(User,on_delete=models.CASCADE)
-    number_gtd = models.CharField(max_length=256,verbose_name="nomer gtd")
+    number_gtd = models.CharField(max_length=256,verbose_name="Nomer gtd")
     reference_gtd = models.CharField(max_length=256)
-    date_recorded = models.DateField(verbose_name="qayd etilgan sana")
+    date_recorded = models.DateField(verbose_name="Qayd etilgan sana")
     sender = models.CharField(max_length=256)
     reciever = models.ForeignKey(Company,on_delete=models.CASCADE)
     country = models.CharField(max_length=256)

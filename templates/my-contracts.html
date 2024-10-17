@@ -18,7 +18,7 @@
         }
 
         .declaration-list {
-            max-width: 800px;
+            width: 800px;
             margin: 0 auto;
             background-color: #fff;
             padding: 20px;
@@ -97,6 +97,23 @@
     .declaration-table td {
         color: #555;
     }
+    .update-button {
+        background-color: green;
+        transition: background-color 0.25s;
+    }
+
+    .update-button:hover {
+        background-color: rgb(10, 88, 10);
+    }
+
+    .delete-button {
+        background-color: rgb(223, 16, 16);
+        transition: background-color 0.25s;
+    }
+
+    .delete-button:hover {
+        background-color: rgb(116, 8, 8);
+    }
     </style>
 </head>
 <body>
@@ -123,8 +140,8 @@
                 <td>{{contract.product}}</td>
                 <td><b>{{ contract.updated_at|date }}</b></td>
                 <td>{{contract.carrier}}</td>
-                <td><a href="#" style="background-color: lightgreen;">Tahrirlash</a></td>
-                <td><a href="{% url 'delete-contract' contract.id %}" style="background-color: red;" onclick="return confirm('Siz rostdan ham ushbu kontraktni o\'chirmoqchimisiz?');">O'chirish</a></td>
+                <td><a class="update-button" href="{% url 'update-contract' contract.id %}">Tahrirlash</a></td>
+                <td><a class="delete-button" href="{% url 'delete-contract' contract.id %}"  onclick="return confirm('Siz rostdan ham ushbu kontraktni o\'chirmoqchimisiz?');">O'chirish</a></td>
             </tr>
             {% empty %}
             <tr>

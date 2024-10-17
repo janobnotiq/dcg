@@ -1,9 +1,12 @@
-from django.shortcuts import render
-from app.models import Company
+from app.models import Company,Contract,Dosmotr
 from .forms import ContractForm, DosmotrForm
 
 from datetime import datetime
 
+from django.urls import reverse_lazy
+from django.shortcuts import render
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 
@@ -62,3 +65,22 @@ def add_dosmotr(request):
 @login_required
 def dosmotr_success_view(request):
     return render(request,"dosmotr-success.html")
+
+class ContractUpdateView(LoginRequiredMixin,UpdateView):
+    model = Contract
+    form_class = ContractForm
+    template_name = "update-contract.html"
+    success_url = reverse_lazy("my_contracts")
+
+    def get_queryset(self):
+        return Contract.objects.filter(declarant=self.request.user)
+    
+
+class DosmotrUpdateView(LoginRequiredMixin,UpdateView):
+    model = Dosmotr
+    form_class = DosmotrForm
+    template_name = "update-dosmotr.html"
+    success_url = reverse_lazy("my_dosmotrs")
+
+    def get_queryset(self):
+        return Dosmotr.objects.filter(declarant=self.request.user)

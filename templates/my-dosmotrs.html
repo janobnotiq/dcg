@@ -18,7 +18,7 @@
         }
 
         .declaration-list {
-            max-width: 800px;
+            width: 800px;
             margin: 0 auto;
             background-color: #fff;
             padding: 20px;
@@ -51,6 +51,7 @@
             color: #999;
             margin-top: 50px;
         }
+
          /* Link tugmachalari stylingi */
          a {
             text-decoration: none;
@@ -70,34 +71,89 @@
         }
 
         .declaration-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-        font-size: 18px;
-        text-align: left;
-    }
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: left;
+        }
 
-    .declaration-table th, .declaration-table td {
-        padding: 12px 15px;
-        border: 1px solid #dddddd;
-    }
+        .declaration-table th, .declaration-table td {
+            padding: 12px 15px;
+            border: 1px solid #dddddd;
+        }
 
-    .declaration-table th {
-        background-color: #f2f2f2;
-        color: #333;
-    }
+        .declaration-table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
 
-    .declaration-table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
+        .declaration-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
 
-    .declaration-table tr:hover {
-        background-color: #f1f1f1;
-    }
+        .declaration-table tr:hover {
+            background-color: #f1f1f1;
+        }
 
-    .declaration-table td {
-        color: #555;
-    }
+        .declaration-table td {
+            color: #555;
+        }
+
+        .update-button {
+            background-color: green;
+            transition: background-color 0.25s;
+        }
+
+        .update-button:hover {
+            background-color: rgb(6, 95, 6);
+        }
+
+        .delete-button {
+            background-color: rgb(223, 16, 16);
+            transition: background-color 0.25s;
+        }
+
+        .delete-button:hover {
+            background-color: rgb(116, 8, 8);
+        }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) {
+            .declaration-list {
+                padding: 10px;
+            }
+
+            .declaration-table, .declaration-table th, .declaration-table td {
+                font-size: 16px;
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .declaration-table, .declaration-table th, .declaration-table td {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            a {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -126,8 +182,8 @@
                     <td>{{ dosmotr.transport_number}}</td>
                     <td>{{ dosmotr.arrived_date}}</td>
                     <td>{{ dosmotr.leaving_date}}</td>
-                    <td><a href="" style="background-color: lightgreen;">Tahrirlash</a></td>
-                    <td><a href="{% url 'delete-dosmotr' dosmotr.id %}" style="background-color: red;" onclick="return confirm('Siz rostdan ham ushbu dosmotrni o\'chirmoqchimisiz?');">O'chirish</a></td>
+                    <td><a class="update-button" href="{% url 'update-dosmotr' dosmotr.id %}">Tahrirlash</a></td>
+                    <td><a class="delete-button" href="{% url 'delete-dosmotr' dosmotr.id %}"  onclick="return confirm('Siz rostdan ham ushbu dosmotrni o\'chirmoqchimisiz?');">O'chirish</a></td>
                 </tr>
                 {% empty %}
                 <tr>

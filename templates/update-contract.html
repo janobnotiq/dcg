@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontraktni yangilash</title>
+    <style>
+            body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbar {
+        background-color: #f8f9fa;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar-brand {
+        font-size: 24px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .navbar-links {
+        display: flex;
+    }
+
+    .nav-link {
+        margin-left: 15px;
+        text-decoration: none;
+        color: #007bff;
+        transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+        color: #0056b3;
+    }
+
+    .container {
+        max-width: 700px; /* Formani kengligini cheklash */
+        margin: 0 auto; /* Markazlashtirish */
+        padding: 20px;
+        background-color: #8796a5; /* Orqa fon rangi */
+        border-radius: 8px; /* Burchaklarni yumshatish */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soyali effekt */
+    }
+
+    h1 {
+        text-align: center; /* Sarlavhani markazlashtirish */
+        color: #333; /* Sarlavha rangi */
+        margin-bottom: 20px; /* Pastga bo‘sh joy */
+    }
+
+    .form-group {
+        margin-bottom: 15px; /* Har bir form elementi orasida bo‘sh joy */
+    }
+
+    .btn {
+        display: block; /* Tugmani to‘liq kenglikda qilish */
+        width: 100%; /* Tugma kengligi */
+        padding: 10px; /* Tugma ichidagi bo‘sh joy */
+        background-color: #007bff; /* Tugma foni rangi */
+        color: white; /* Tugma matni rangi */
+        border: none; /* Tugma chegarasiz */
+        border-radius: 5px; /* Tugma burchaklarini yumshatish */
+        font-size: 16px; /* Matn o‘lchami */
+        cursor: pointer; /* Ko‘rsatgichni o'zgartirish */
+        transition: background-color 0.3s; /* Rang o‘zgarishidagi animatsiya */
+    }
+
+    .btn:hover {
+        background-color: #0056b3; /* Hover holatidagi rang o‘zgarishi */
+    }
+
+    /* Input va select qutilarining stylingi */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+        width: 680px;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+        background-color: #fff;
+    }
+
+    /* Label stylingi */
+    label {
+        font-weight: bold;
+        margin-top: 10px;
+        display: block;
+        color: #333;
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="{% url 'home' %}" style="font-weight: bold;">DCG</a>
+        <div class="navbar-links">
+            <a class="nav-link" href="{% url 'home' %}">Bosh sahifaga</a>
+            <a class="nav-link" href="{% url 'my-declarations' %}">Mening xizmatlarim</a>
+            <a class="nav-link" href="{% url 'my_contracts' %}">Ortga</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Kontraktni yangilash</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn">Yangilash</button>
+        </form>
+    </div>
+</body>
+</html>
