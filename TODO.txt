@@ -2,3 +2,7 @@
 2. Filterlar kontrakt va dosmotr uchun
 3. Kompaniya uchun filtrlar
 4. Telegram bot
+
+1.Deklaratsiyalarni hisoblash: 30-sen, BOSILDI, BOSILMADI
+2.ND40 IM70: 
+3.Foydalanuvchi nomi bo'lishi kerak

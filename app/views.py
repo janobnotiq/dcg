@@ -444,3 +444,52 @@ class CompanyContractFilterView(View):
             "start_date": start_date.date(),
             "end_date": end_date.date(),
         })
+    
+
+class CompanyDosmotrReportView(View):
+    def get(self, request, pk):
+        # Foydalanuvchi ID'si bilan deklaratsiyalarni olish
+        company = Company.objects.filter(id=pk).last()
+        dosmotrs = Dosmotr.objects.filter(reciever=company).all()
+        from datetime import datetime
+
+        for dosmotr in dosmotrs:
+            if isinstance(dosmotr.updated_at, str):
+                dosmotr.updated_at = datetime.fromisoformat(dosmotr.updated_at)
+            else:
+                dosmotr.updated_at = dosmotr.updated_at  # Agar bu allaqachon datetime bo'lsa
+
+        return render(request, 'company-dosmotr-report.html', {
+            'dosmotrs': dosmotrs,
+            'count': dosmotrs.count(),
+            'company': company,
+        })
+    
+
+class CompanyDosmotrFilterView(View):
+    def post(self, request, pk):
+        company = Company.objects.filter(id=pk).last()
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        if isinstance(start_date, str):
+            start_date = datetime.fromisoformat(start_date)
+            start_date = timezone.make_aware(start_date, timezone.get_current_timezone())
+
+        if isinstance(end_date, str):
+            end_date = datetime.fromisoformat(end_date)
+            end_date = timezone.make_aware(end_date, timezone.get_current_timezone())
+
+        # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
+        dosmotrs = Dosmotr.objects.filter(
+            reciever=company,
+            updated_at__gte=start_date,
+            updated_at__lte=end_date,
+        )
+
+        return render(request, 'company-dosmotr-filter.html', {
+            'dosmotrs': dosmotrs,
+            'count': dosmotrs.count(),
+            'company': company,
+            "start_date": start_date.date(),
+            "end_date": end_date.date(),
+        })
