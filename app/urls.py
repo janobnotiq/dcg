@@ -6,7 +6,8 @@ from .views import logout_view, add_declaration, declaration_success_view\
     , employees_list, companies_list, my_services_view, my_contracts_view,my_dosmotrs_view \
     ,delete_contract,delete_declaration,delete_dosmotr, employee_report\
     , DeclarationFilterView, DeclarationUpdateView, DeclarationReportView,ContractReportView \
-    ,ContractFilterView, DosmotrReportView, DosmotrFilterView
+    ,ContractFilterView, DosmotrReportView, DosmotrFilterView,CompanyDeclarationReportView \
+    ,CompanyDeclarationFilterView
 
 
 urlpatterns = [
@@ -29,11 +30,15 @@ urlpatterns = [
     # for director
     path("employees/",employees_list, name="employees"),
     path("employee-report/<str:username>/",employee_report, name="employee-report"),
-    path("companies/", companies_list, name="companies"),
     path("declarant-report/<int:declarant_id>/", DeclarationReportView.as_view(), name="declarant-report"),
     path("declarant-report/<str:username>/", DeclarationFilterView.as_view(), name="filter-report"),
     path("contract-report/<int:declarant_id>/", ContractReportView.as_view(), name="contract-report"),
     path("contract-filter/<int:declarant_id>/", ContractFilterView.as_view(), name="contract-filter"),
     path("dosmotr-report/<int:declarant_id>/", DosmotrReportView.as_view(), name="dosmotr-report"),
     path("dosmotr-filter/<int:declarant_id>/", DosmotrFilterView.as_view(), name="dosmotr-filter"),
+
+    #companies
+    path("companies/", companies_list, name="companies"),
+    path("company-declaration-report/<int:pk>/", CompanyDeclarationReportView.as_view(), name="company-declaration-report"),
+    path("company-declaration-filter/<int:pk>/", CompanyDeclarationFilterView.as_view(), name="company-declaration-filter"),
 ]

@@ -105,14 +105,14 @@ def in_process_declarations(request):
 @login_required
 def employees_list(request):
     if request.user.is_superuser:
-        selected_month = request.GET.get('month', datetime.now().month)
+        selected_month = request.GET.get('month', timezone.now().month)
         employees = User.objects.filter(is_staff=False)
         for employee in employees:
             employee.declaration_count = employee.declaration_count(month=selected_month)
 
         return render(request,"employees.html",{
             "employees":employees,
-            "current_month": int(selected_month) if selected_month else datetime.now().month,
+            "current_month": int(selected_month) if selected_month else timezone.now().month,
             })
     else:
         employees = User.objects.filter(id=request.user.pk)
@@ -334,7 +334,7 @@ def employee_report(request,username):
     declaration_count = Declaration.objects.filter(declarant=employee,updated_at__month=selected_month).count()
     contract_count = Contract.objects.filter(declarant=employee,updated_at__month=selected_month).count()
     dosmotr_count = Dosmotr.objects.filter(declarant=employee,updated_at__month=selected_month).count()
-
+    print(selected_month)
     return render(
         request,
         "employee-report.html",
@@ -343,6 +343,55 @@ def employee_report(request,username):
             "contract_count":contract_count,
             "dosmotr_count":dosmotr_count,
             "employee":employee,
-            "month":selected_month
+            "current_month":int(selected_month)
         }
     )
+
+
+class CompanyDeclarationReportView(View):
+    def get(self, request, pk):
+        # Foydalanuvchi ID'si bilan deklaratsiyalarni olish
+        company = Company.objects.filter(id=pk).last()
+        declarations = Declaration.objects.filter(reciever=company)
+        from datetime import datetime
+
+        for declaration in declarations:
+            if isinstance(declaration.updated_at, str):
+                declaration.updated_at = datetime.fromisoformat(declaration.updated_at)
+            else:
+                declaration.updated_at = declaration.updated_at  # Agar bu allaqachon datetime bo'lsa
+
+        return render(request, 'company-declaration-report.html', {
+            'declarations': declarations,
+            'count': declarations.count(),
+            'company': company,
+        })
+
+
+class CompanyDeclarationFilterView(View):
+    def post(self, request, pk):
+        company = Company.objects.filter(id=pk).last()
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        if isinstance(start_date, str):
+            start_date = datetime.fromisoformat(start_date)
+            start_date = timezone.make_aware(start_date, timezone.get_current_timezone())
+
+        if isinstance(end_date, str):
+            end_date = datetime.fromisoformat(end_date)
+            end_date = timezone.make_aware(end_date, timezone.get_current_timezone())
+
+        # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
+        declarations = Declaration.objects.filter(
+            reciever=company,
+            updated_at__gte=start_date,
+            updated_at__lte=end_date,
+        )
+
+        return render(request, 'declarant-report-filter.html', {
+            'declarations': declarations,
+            'count': declarations.count(),
+            'company': company,
+            "start_date": start_date.date(),
+            "end_date": end_date.date(),
+        })

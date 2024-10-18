@@ -1,7 +1,7 @@
 from app.models import Company,Contract,Dosmotr
 from .forms import ContractForm, DosmotrForm
 
-from datetime import datetime
+from django.utils import timezone
 
 from django.urls import reverse_lazy
 from django.shortcuts import render
@@ -13,7 +13,7 @@ from django.shortcuts import redirect
 
 @login_required
 def company_report(request,pk):
-    selected_month = request.GET.get('month', datetime.now().month)
+    selected_month = request.GET.get('month', timezone.now().month)
 
     company = Company.objects.filter(id=pk).last()
 
@@ -22,7 +22,7 @@ def company_report(request,pk):
         "declarations": company.declaration_count(month=selected_month),
         "contracts": company.contract_count(month=selected_month),
         "dosmotrs": company.dosmotr_count(month=selected_month),
-        "current_month": int(selected_month) if selected_month else datetime.now().month,
+        "current_month": int(selected_month) if selected_month else timezone.now().month,
     }
 
     return render(request,"company-report.html",context)

@@ -1,0 +1,112 @@
+<title>Filtrlangan deklaratsiyalar</title>
+<style>
+     body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    h2 {
+        margin-top: 20px;
+        font-size: 20px;
+        color: #555;
+    }
+
+    
+    .btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+        .declaration-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+
+    .declaration-table th, .declaration-table td {
+        padding: 12px 15px;
+        border: 1px solid #dddddd;
+    }
+
+    .declaration-table th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+
+    .declaration-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .declaration-table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .declaration-table td {
+        color: #555;
+    }
+
+</style>
+<div class="container">
+    <h1>{{company.name}} bilan tuzilgan deklaratsiyalar</h1>
+
+    <h2>{{start_date}} va {{end_date}} oralig'ida {{ count }} ta deklaratsiya topildi</h2>
+    <a href="{% url 'company-declaration-report' company.id %}" class="btn">Ortga</a>
+    <table class="declaration-table">
+            <thead>
+                <tr>
+                    <th>GTD Raqami</th>
+                    <th>Deklarant</th>
+                    <th>Tuzilgan sana</th>
+                    <th>Rejimi</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for declaration in declarations %}
+                <tr>
+                    <td>{{ declaration.number_gtd }}</td>
+                    <td>{{ declaration.declarant.first_name }} {{declaration.declarant.last_name}}</td>
+                    <td>{{ declaration.date_recorded}}</td>
+                    <td>{{ declaration.customs_mode}}</td>
+                    {% if declaration.status == "BOSILDI" %}
+                    <td style="color: green;">{{ declaration.status}}</td>
+                    {% else %}
+                    <td style="color: red;">{{ declaration.status}}</td>
+                    {% endif %}
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">Hech qanday deklaratsiya topilmadi.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
