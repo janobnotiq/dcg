@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hisobot: {{company.name}}</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    h2 {
+        margin-top: 20px;
+        font-size: 20px;
+        color: #555;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input[type="date"], input[type="number"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    .declaration-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+
+    .declaration-table th, .declaration-table td {
+        padding: 12px 15px;
+        border: 1px solid #dddddd;
+    }
+
+    .declaration-table th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+
+    .declaration-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .declaration-table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .declaration-table td {
+        color: #555;
+    }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><b>{{company.name}}</b> bilan tuzilgan kontraktlar</h1>
+        
+        <form action="{% url 'company-contract-filter' company.id %}" method="post">
+            {% csrf_token %}
+            <label for="start_date">Boshlanish sanasi:</label>
+            <input type="date" name="start_date" id="start_date" required>
+            
+            <label for="end_date">Tugash sanasi:</label>
+            <input type="date" name="end_date" id="end_date" required>
+            
+            <button type="submit" class="btn">Filtrlash</button>
+        </form>
+        {% if user.is_superuser %}
+            <a href="{% url 'company-report' company.id %}" class="btn">Ortga</a>
+        {% else %}
+            <a href="{% url 'my_contracts' %}" class="btn">Ortga</a>
+        {% endif %}
+
+        <h2>{{ count }} ta kontrakt topildi</h2>
+
+        <table class="declaration-table">
+            <thead>
+                <tr>
+                    <th>Tovar</th>
+                    <th>Kontrakt raqami</th>
+                    <th>Deklarant</th>
+                    <th>Qayd etilgan sana</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contract in contracts %}
+                <tr>
+                    <td>{{ contract.product }}</td>
+                    <td>{{ contract.contract_no }}</td>
+                    <td>{{ contract.declarant.first_name}} {{ contract.declarant.last_name}}</td>
+                    <td>{{ contract.updated_at|date:"d-F Y, H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Hech qanday kontrakt topilmadi.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</body>
+</html>

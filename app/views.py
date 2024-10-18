@@ -388,9 +388,58 @@ class CompanyDeclarationFilterView(View):
             updated_at__lte=end_date,
         )
 
-        return render(request, 'declarant-report-filter.html', {
+        return render(request, 'company-declaration-filter.html', {
             'declarations': declarations,
             'count': declarations.count(),
+            'company': company,
+            "start_date": start_date.date(),
+            "end_date": end_date.date(),
+        })
+    
+
+class CompanyContractReportView(View):
+    def get(self, request, pk):
+        # Foydalanuvchi ID'si bilan deklaratsiyalarni olish
+        company = Company.objects.filter(id=pk).last()
+        contracts = Contract.objects.filter(reciever=company).all()
+        from datetime import datetime
+
+        for contract in contracts:
+            if isinstance(contract.updated_at, str):
+                contract.updated_at = datetime.fromisoformat(contract.updated_at)
+            else:
+                contract.updated_at = contract.updated_at  # Agar bu allaqachon datetime bo'lsa
+
+        return render(request, 'company-contract-report.html', {
+            'contracts': contracts,
+            'count': contracts.count(),
+            'company': company,
+        })
+    
+
+class CompanyContractFilterView(View):
+    def post(self, request, pk):
+        company = Company.objects.filter(id=pk).last()
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        if isinstance(start_date, str):
+            start_date = datetime.fromisoformat(start_date)
+            start_date = timezone.make_aware(start_date, timezone.get_current_timezone())
+
+        if isinstance(end_date, str):
+            end_date = datetime.fromisoformat(end_date)
+            end_date = timezone.make_aware(end_date, timezone.get_current_timezone())
+
+        # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
+        contracts = Contract.objects.filter(
+            reciever=company,
+            updated_at__gte=start_date,
+            updated_at__lte=end_date,
+        )
+
+        return render(request, 'company-contract-filter.html', {
+            'contracts': contracts,
+            'count': contracts.count(),
             'company': company,
             "start_date": start_date.date(),
             "end_date": end_date.date(),

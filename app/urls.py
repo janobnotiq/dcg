@@ -7,7 +7,7 @@ from .views import logout_view, add_declaration, declaration_success_view\
     ,delete_contract,delete_declaration,delete_dosmotr, employee_report\
     , DeclarationFilterView, DeclarationUpdateView, DeclarationReportView,ContractReportView \
     ,ContractFilterView, DosmotrReportView, DosmotrFilterView,CompanyDeclarationReportView \
-    ,CompanyDeclarationFilterView
+    ,CompanyDeclarationFilterView, CompanyContractReportView, CompanyContractFilterView
 
 
 urlpatterns = [
@@ -41,4 +41,6 @@ urlpatterns = [
     path("companies/", companies_list, name="companies"),
     path("company-declaration-report/<int:pk>/", CompanyDeclarationReportView.as_view(), name="company-declaration-report"),
     path("company-declaration-filter/<int:pk>/", CompanyDeclarationFilterView.as_view(), name="company-declaration-filter"),
+    path("company-contract-report/<int:pk>/", CompanyContractReportView.as_view(), name="company-contract-report"),
+    path("company-contract-filter/<int:pk>/", CompanyContractFilterView.as_view(), name="company-contract-filter"),
 ]
