@@ -2,3 +2,6 @@ Django==5.1.1
 python-dotenv==1.0.1
 psycopg2==2.9.9
 django-unfold==0.39.0
+requests==2.32.3
+celery==5.4.0
+redis==5.1.1

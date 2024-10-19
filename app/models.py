@@ -2,6 +2,7 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from root.models import BaseModel
+from datetime import timedelta
 
 
 # Create your models here.
@@ -55,6 +56,7 @@ class Company(BaseModel):
 
 
 class Declaration(BaseModel):
+    
     class Status(models.TextChoices):
         FINISHED = "BOSILDI", "BOSILDI"
         IN_PROCESS = "BOSILMADI", "BOSILMADI"
@@ -66,8 +68,9 @@ class Declaration(BaseModel):
         ND40 = "ND40", "ND 40"
         IM74 = "IM74", "IM 74"
         EK10 = "EK10", "EK 10"
+        OTHER = "VABOSHQALAR", "VA BOSHQALAR"
 
-    customs_mode = models.CharField(max_length=10,choices=Modes.choices, verbose_name="Rejimi")
+    customs_mode = models.CharField(max_length=20,choices=Modes.choices, verbose_name="Rejimi")
     declarant = models.ForeignKey(User,on_delete=models.CASCADE)
     number_gtd = models.CharField(max_length=256,verbose_name="Nomer gtd")
     reference_gtd = models.CharField(max_length=256)
@@ -79,6 +82,23 @@ class Declaration(BaseModel):
     factor_price = models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
     quantity = models.IntegerField()
     status = models.CharField(max_length=15,choices=Status.choices)
+
+    def left_days(self):
+        
+        if self.customs_mode == self.Modes.ND40 or self.customs_mode == self.Modes.IM70:
+            pass
+            today = timezone.now().date()
+            expected_day = self.date_recorded + timedelta(days=60)
+            days_left = (expected_day - today).days
+            message = f"Hurmatli {self.declarant.first_name} {self.declarant.last_name}! @{self.declarant.username} \n \
+            Sizning {self.number_gtd} raqamli deklaratsiyangiz boshqa rejimga olib o'tilishi kerak.\n \
+                {days_left} kun qoldi!\n"
+            if days_left % 10 == 0:
+                return message
+            else:
+                return None
+        else:
+            return None
 
     def __str__(self) -> str:
         return f"{self.declarant.first_name} {self.declarant.last_name}ning deklaratsiyasi"
