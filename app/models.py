@@ -1,9 +1,10 @@
 from django.utils import timezone
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from root.models import BaseModel
 from datetime import timedelta
 
+User = get_user_model()
 
 # Create your models here.
 class Company(BaseModel):
@@ -83,22 +84,14 @@ class Declaration(BaseModel):
     quantity = models.IntegerField()
     status = models.CharField(max_length=15,choices=Status.choices)
 
-    def left_days(self):
+    @property
+    def days_left(self):
         
-        if self.customs_mode == self.Modes.ND40 or self.customs_mode == self.Modes.IM70:
-            pass
-            today = timezone.now().date()
-            expected_day = self.date_recorded + timedelta(days=60)
-            days_left = (expected_day - today).days
-            message = f"Hurmatli {self.declarant.first_name} {self.declarant.last_name}! @{self.declarant.username} \n \
-            Sizning {self.number_gtd} raqamli deklaratsiyangiz boshqa rejimga olib o'tilishi kerak.\n \
-                {days_left} kun qoldi!\n"
-            if days_left % 10 == 0:
-                return message
-            else:
-                return None
-        else:
-            return None
+        today = timezone.now().date()
+        expected_day = self.date_recorded + timedelta(days=61)
+        return (expected_day - today).days
+          
+           
 
     def __str__(self) -> str:
         return f"{self.declarant.first_name} {self.declarant.last_name}ning deklaratsiyasi"

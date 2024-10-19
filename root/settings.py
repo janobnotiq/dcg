@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv()
+load_dotenv(override=True)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -130,11 +130,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL="home"
 LOGOUT_REDIRECT_URL="/"
-
-# settings.py
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis brokeri uchun
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Natijalar uchun backend
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Asia/Tashkent'

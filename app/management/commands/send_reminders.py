@@ -1,26 +1,10 @@
-import os
-import requests
-from dotenv import load_dotenv
-from django.core.management.base import BaseCommand
 from app.models import Declaration  # Modelingizni import qiling
+from app.utils import prepare_message, send_message
+
+from django.core.management.base import BaseCommand
 from django.db.models import Q
 
-load_dotenv()
-
-TOKEN = os.environ.get("BOT_TOKEN")
-CHAT_ID = os.environ.get("GROUP_CHAT_ID")
-
-def send_message(message):
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    payload = {
-        'chat_id': CHAT_ID,
-        'text': message
-    }
-    response = requests.post(url, data=payload)
-    if response.status_code == 200:
-        print("Xabar yuborildi")
-    else:
-        print(f"Xatolik: {response.text}")
+from time import sleep
 
 class Command(BaseCommand):
     help = "Bot orqali deklaratsiyalar haqida eslatma yuboradi"
@@ -30,7 +14,17 @@ class Command(BaseCommand):
         declarations = Declaration.objects.filter(
             Q(customs_mode=Declaration.Modes.ND40) | Q(customs_mode=Declaration.Modes.IM70)
 )
+        print(declarations)
         for declaration in declarations:
-            if declaration.left_days() is not None:
-                send_message(declaration.left_days())
+            if declaration.days_left % 10 != 0:
+                continue
+            
+            try:
+                message = prepare_message(declaration)
+                print(message)
+            except ValueError:
+                continue
+            
+            send_message(message)
+            sleep(5)
         
