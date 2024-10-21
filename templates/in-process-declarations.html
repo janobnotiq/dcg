@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mening Deklaratsiyalarim</title>
+    <title>Deklaratsiyalar</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,7 +18,7 @@
         }
 
         .declaration-list {
-            max-width: 800px;
+            width: 1200px;
             margin: 0 auto;
             background-color: #fff;
             padding: 20px;
@@ -68,29 +68,101 @@
         a:hover {
             background-color: #0056b3;
         }
+        .declaration-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+
+    .declaration-table th, .declaration-table td {
+        padding: 12px 15px;
+        border: 1px solid #dddddd;
+    }
+
+    .declaration-table th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+
+    .declaration-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .declaration-table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .declaration-table td {
+        color: #555;
+    }
+
+    .update-button {
+        background-color: green;
+        transition: background-color 0.25s;
+    }
+
+    .update-button:hover {
+        background-color: rgb(13, 74, 13);
+    }
+
+    .delete-button {
+        background-color: rgb(223, 16, 16);
+        transition: background-color 0.25s;
+    }
+
+    .delete-button:hover {
+        background-color: rgb(116, 8, 8);
+    }
     </style>
 </head>
 <body>
 
-    <h1>Jarayondagi deklaratsiyalar</h1>
+    <h1>Boshqa rejimga o'tkazilishi kerak bo'lgan deklaratsiyalar</h1>
 
     <div class="declaration-list">
+        <a href="{% url 'home' %}">Bosh sahifaga</a>
         <!-- Foydalanuvchining deklaratsiyalarini chiqarish -->
         {% if declarations %}
-            {% for declaration in declarations %}
-                <div class="declaration">
-                    <p>{{declaration.number_gtd}}</p>
-                    <p>{{declaration.reference_gtd}}</p>
-                    <p>{{declaration.customs_mode}}</p>
-                    <p>{{declaration.date_recorded}}</p>
-                    <p style="color: red;font-weight: bold;">{{declaration.status}}</p>
-                    <a href="{% url 'update-declaration' declaration.id %}">Deklaratsiyani yangilash</a>
-                </div>
-            {% endfor %}
+            <table class="declaration-table">
+                <thead>
+                    <tr>
+                        <th>GTD Raqami</th>
+                        <th>Qabul qiluvchi</th>
+                        <th>Tuzilgan sana</th>
+                        <th>Rejimi</th>
+                        <th>Status</th>
+                        <th>Tahrirlash</th>
+                        <th>O'chirish</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for declaration in declarations %}
+                    <tr>
+                        <td>{{ declaration.number_gtd }}</td>
+                        <td>{{ declaration.reciever }}</td>
+                        <td>{{ declaration.date_recorded}}</td>
+                        <td>{{ declaration.customs_mode}}</td>
+                        {% if declaration.status == "BOSILDI" %}
+                        <td style="color: green;">{{ declaration.status}}</td>
+                        {% else %}
+                        <td style="color: red;">{{ declaration.status}}</td>
+                        {% endif %}
+                        <td><a class="update-button" href="{% url 'update-declaration' declaration.id %}">Tahrirlash</a></td>
+                        <td><a class="delete-button" href="{% url 'delete-declaration' declaration.id %}" onclick="return confirm('Siz rostdan ham ushbu deklaratsiyani o\'chirmoqchimisiz?');">O'chirish</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">Hech qanday deklaratsiya topilmadi.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% else %}
             <p class="no-declarations">Sizda hech qanday deklaratsiya mavjud emas.</p>
         {% endif %}
-        <a href="{% url 'home' %}">Bosh sahifaga</a>
+        
     </div>
 </body>
 </html>

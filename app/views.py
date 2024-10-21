@@ -8,6 +8,7 @@ from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView
 from django.views import View
+from django.db.models import Q
 
 from .forms import DeclarationForm, CompanyForm
 from .models import Declaration, Company, Contract, Dosmotr
@@ -98,7 +99,12 @@ def declaration_list_view(request):
 # jarayondagi deklaratsiyalar
 @login_required
 def in_process_declarations(request):
-    declarations = Declaration.objects.filter(declarant=request.user,status=Declaration.Status.IN_PROCESS)
+    declarations = Declaration.objects.filter(
+        Q(declarant=request.user) & 
+        (
+            Q(customs_mode=Declaration.Modes.ND40) | Q(customs_mode=Declaration.Modes.IM70)
+            )
+        )
     return render(request,"in-process-declarations.html",{"declarations":declarations})
 
 # xodimlar ro'yhati
