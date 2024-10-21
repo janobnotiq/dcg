@@ -13,7 +13,7 @@
     }
 
     .container {
-        max-width: 800px;
+        max-width: 1200px;
         margin: 20px auto;
         padding: 20px;
         background: white;
@@ -114,7 +114,7 @@
             <button type="submit" class="btn">Filtrlash</button>
         </form>
         {% if user.is_superuser %}
-            <a href="{% url 'employees' %}" class="btn">Ortga</a>
+            <a href="{% url 'employee-report' declarant.username %}" class="btn">Ortga</a>
         {% else %}
             <a href="{% url 'my_contracts' %}" class="btn">Ortga</a>
         {% endif %}
@@ -136,7 +136,7 @@
                     <td>{{ contract.product }}</td>
                     <td>{{ contract.contract_no }}</td>
                     <td>{{ contract.reciever }}</td>
-                    <td>{{ contract.updated_at|date:"d-F Y, H:i" }}</td>
+                    <td>{{ contract.date_recorded }}</td>
                 </tr>
                 {% empty %}
                 <tr>

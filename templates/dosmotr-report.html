@@ -13,7 +13,7 @@
     }
 
     .container {
-        max-width: 800px;
+        max-width: 1200px;
         margin: 20px auto;
         padding: 20px;
         background: white;
@@ -114,7 +114,7 @@
             <button type="submit" class="btn">Filtrlash</button>
         </form>
         {% if user.is_superuser %}
-            <a href="{% url 'employees' %}" class="btn">Ortga</a>
+            <a href="{% url 'employee-report' declarant.username %}" class="btn">Ortga</a>
         {% else %}
             <a href="{% url 'my_dosmotrs' %}" class="btn">Ortga</a>
         {% endif %}

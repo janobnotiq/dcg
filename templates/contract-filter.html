@@ -8,7 +8,7 @@
     }
 
     .container {
-        max-width: 800px;
+        max-width: 1200px;
         margin: 20px auto;
         padding: 20px;
         background: white;
@@ -95,7 +95,7 @@
                     <td>{{ contract.product }}</td>
                     <td>{{ contract.contract_no }}</td>
                     <td>{{ contract.reciever }}</td>
-                    <td>{{ contract.updated_at|date:"d-F Y, H:i" }}</td>
+                    <td>{{ contract.date_recorded }}</td>
                 </tr>
                 {% empty %}
                 <tr>

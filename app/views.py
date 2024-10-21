@@ -80,8 +80,8 @@ def declaration_list_view(request):
         )
 
     count = declarations.filter(
-        updated_at__month=timezone.now().month,
-        updated_at__year=timezone.now().year).count()
+        date_recorded__month=timezone.now().month,
+        date_recorded__year=timezone.now().year).count()
 
     if declarations.count() > 20:
         declarations = declarations[:20]
@@ -128,7 +128,7 @@ def employees_list(request):
 @login_required
 def companies_list(request):
     companies = Company.objects.all()
-    selected_month = request.GET.get('month', datetime.now().month)
+    selected_month = request.GET.get('month', timezone.now().month)
 
     for company in companies:
             company.declaration_count = company.declaration_count(month=selected_month)
@@ -159,13 +159,6 @@ class DeclarationReportView(View):
         # Foydalanuvchi ID'si bilan deklaratsiyalarni olish
         declarant = User.objects.filter(id=declarant_id).last()
         declarations = Declaration.objects.filter(declarant=declarant,status=Declaration.Status.FINISHED)
-        from datetime import datetime
-
-        for declaration in declarations:
-            if isinstance(declaration.updated_at, str):
-                declaration.updated_at = datetime.fromisoformat(declaration.updated_at)
-            else:
-                declaration.updated_at = declaration.updated_at  # Agar bu allaqachon datetime bo'lsa
 
         return render(request, 'declarant-report.html', {
             'declarations': declarations,
@@ -189,8 +182,8 @@ class DeclarationFilterView(View):
         # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
         declarations = Declaration.objects.filter(
             declarant=declarant,
-            updated_at__gte=start_date,
-            updated_at__lte=end_date,
+            date_recorded__gte=start_date,
+            date_recorded__lte=end_date,
             status=Declaration.Status.FINISHED,
         )
 
@@ -206,13 +199,13 @@ class DeclarationFilterView(View):
 @login_required
 def my_contracts_view(request):
     contracts = Contract.objects.filter(declarant=request.user).all()
-    count = Dosmotr.objects.filter(declarant=request.user,updated_at__month=timezone.now().month).count()
+    count = Contract.objects.filter(declarant=request.user,date_recorded__month=timezone.now().month).count()
     return render(request,"my-contracts.html",{"contracts":contracts,"count":count})
 
 @login_required
 def my_dosmotrs_view(request):
     dosmotrs = Dosmotr.objects.filter(declarant=request.user).all()
-    count = Dosmotr.objects.filter(declarant=request.user,updated_at__month=timezone.now().month).count()
+    count = Dosmotr.objects.filter(declarant=request.user,leaving_date__month=timezone.now().month).count()
     return render(request,"my-dosmotrs.html",{"dosmotrs":dosmotrs,"count":count})
 
 @login_required
@@ -241,13 +234,6 @@ class ContractReportView(View):
         # Foydalanuvchi ID'si bilan deklaratsiyalarni olish
         declarant = User.objects.filter(id=declarant_id).last()
         contracts = Contract.objects.filter(declarant=declarant).all()
-        from datetime import datetime
-
-        for contract in contracts:
-            if isinstance(contract.updated_at, str):
-                contract.updated_at = datetime.fromisoformat(contract.updated_at)
-            else:
-                contract.updated_at = contract.updated_at  # Agar bu allaqachon datetime bo'lsa
 
         return render(request, 'contract-report.html', {
             'contracts': contracts,
@@ -272,8 +258,8 @@ class ContractFilterView(View):
         # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
         contracts = Contract.objects.filter(
             declarant=declarant,
-            updated_at__gte=start_date,
-            updated_at__lte=end_date,
+            date_recorded__gte=start_date,
+            date_recorded__lte=end_date,
         )
 
         return render(request, 'contract-filter.html', {
@@ -290,13 +276,6 @@ class DosmotrReportView(View):
         # Foydalanuvchi ID'si bilan deklaratsiyalarni olish
         declarant = User.objects.filter(id=declarant_id).last()
         dosmotrs = Dosmotr.objects.filter(declarant=declarant).all()
-        from datetime import datetime
-
-        for dosmotr in dosmotrs:
-            if isinstance(dosmotr.updated_at, str):
-                dosmotr.updated_at = datetime.fromisoformat(dosmotr.updated_at)
-            else:
-                dosmotr.updated_at = dosmotr.updated_at  # Agar bu allaqachon datetime bo'lsa
 
         return render(request, 'dosmotr-report.html', {
             'dosmotrs': dosmotrs,
@@ -321,8 +300,8 @@ class DosmotrFilterView(View):
         # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
         dosmotrs = Dosmotr.objects.filter(
             declarant=declarant,
-            updated_at__gte=start_date,
-            updated_at__lte=end_date,
+            leaving_date__gte=start_date,
+            leaving_date__lte=end_date,
         )
 
         return render(request, 'dosmotr-filter.html', {
@@ -337,9 +316,9 @@ class DosmotrFilterView(View):
 def employee_report(request,username):
     employee = get_object_or_404(User,username=username)
     selected_month = request.GET.get('month',timezone.now().month)
-    declaration_count = Declaration.objects.filter(declarant=employee,updated_at__month=selected_month).count()
-    contract_count = Contract.objects.filter(declarant=employee,updated_at__month=selected_month).count()
-    dosmotr_count = Dosmotr.objects.filter(declarant=employee,updated_at__month=selected_month).count()
+    declaration_count = Declaration.objects.filter(declarant=employee,date_recorded__month=selected_month).count()
+    contract_count = Contract.objects.filter(declarant=employee,date_recorded__month=selected_month).count()
+    dosmotr_count = Dosmotr.objects.filter(declarant=employee,leaving_date__month=selected_month).count()
     print(selected_month)
     return render(
         request,
@@ -359,13 +338,6 @@ class CompanyDeclarationReportView(View):
         # Foydalanuvchi ID'si bilan deklaratsiyalarni olish
         company = Company.objects.filter(id=pk).last()
         declarations = Declaration.objects.filter(reciever=company)
-        from datetime import datetime
-
-        for declaration in declarations:
-            if isinstance(declaration.updated_at, str):
-                declaration.updated_at = datetime.fromisoformat(declaration.updated_at)
-            else:
-                declaration.updated_at = declaration.updated_at  # Agar bu allaqachon datetime bo'lsa
 
         return render(request, 'company-declaration-report.html', {
             'declarations': declarations,
@@ -390,8 +362,8 @@ class CompanyDeclarationFilterView(View):
         # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
         declarations = Declaration.objects.filter(
             reciever=company,
-            updated_at__gte=start_date,
-            updated_at__lte=end_date,
+            date_recorded__gte=start_date,
+            date_recorded__lte=end_date,
         )
 
         return render(request, 'company-declaration-filter.html', {
@@ -408,13 +380,6 @@ class CompanyContractReportView(View):
         # Foydalanuvchi ID'si bilan deklaratsiyalarni olish
         company = Company.objects.filter(id=pk).last()
         contracts = Contract.objects.filter(reciever=company).all()
-        from datetime import datetime
-
-        for contract in contracts:
-            if isinstance(contract.updated_at, str):
-                contract.updated_at = datetime.fromisoformat(contract.updated_at)
-            else:
-                contract.updated_at = contract.updated_at  # Agar bu allaqachon datetime bo'lsa
 
         return render(request, 'company-contract-report.html', {
             'contracts': contracts,
@@ -439,8 +404,8 @@ class CompanyContractFilterView(View):
         # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
         contracts = Contract.objects.filter(
             reciever=company,
-            updated_at__gte=start_date,
-            updated_at__lte=end_date,
+            date_recorded__gte=start_date,
+            date_recorded__lte=end_date,
         )
 
         return render(request, 'company-contract-filter.html', {
@@ -457,13 +422,6 @@ class CompanyDosmotrReportView(View):
         # Foydalanuvchi ID'si bilan deklaratsiyalarni olish
         company = Company.objects.filter(id=pk).last()
         dosmotrs = Dosmotr.objects.filter(reciever=company).all()
-        from datetime import datetime
-
-        for dosmotr in dosmotrs:
-            if isinstance(dosmotr.updated_at, str):
-                dosmotr.updated_at = datetime.fromisoformat(dosmotr.updated_at)
-            else:
-                dosmotr.updated_at = dosmotr.updated_at  # Agar bu allaqachon datetime bo'lsa
 
         return render(request, 'company-dosmotr-report.html', {
             'dosmotrs': dosmotrs,
@@ -488,8 +446,8 @@ class CompanyDosmotrFilterView(View):
         # Foydalanuvchi ID'si bilan sanalar oralig'idagi deklaratsiyalarni olish
         dosmotrs = Dosmotr.objects.filter(
             reciever=company,
-            updated_at__gte=start_date,
-            updated_at__lte=end_date,
+            leaving_date__gte=start_date,
+            leaving_date__lte=end_date,
         )
 
         return render(request, 'company-dosmotr-filter.html', {

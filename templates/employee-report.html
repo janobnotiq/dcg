@@ -101,6 +101,20 @@
         cursor: not-allowed;
     }
 
+    .tugma {
+        text-decoration: none;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 20px;
+    }
+    .tugma:hover {
+        background-color: #0056b3;
+    }
     </style>
 </head>
 <body>
@@ -125,7 +139,8 @@
             <option value="12" {% if current_month == 12 %}selected{% endif %}>Dekabr</option>
         </select>
     </form>
-
+    <a class="tugma" href="{% url 'employees' %}">Ortga</a>
+    
     <div class="container">
         <div class="section">
             <a href="{% url 'declarant-report' employee.id %}" class="section-title">Deklaratsiyalar</a>

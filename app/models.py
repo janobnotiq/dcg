@@ -25,35 +25,35 @@ class Company(BaseModel):
         return Declaration.objects.filter(
             reciever=self,               # `self` - bu kompaniya
             status=Declaration.Status.FINISHED,
-            updated_at__month=month,      # `updated_at` bo'yicha oy filtr
-            updated_at__year=timezone.now().year,
+            date_recorded__month=month,      # `date_recorded` bo'yicha oy filtr
+            date_recorded__year=timezone.now().year,
         ).count()
     
     def contract_count(self,month=None):
         if month is None:
             month = timezone.now().month
         
-        # Tanlangan oydagi deklaratsiyalarni sanash (updated_at bo'yicha filtrlash)
+        # Tanlangan oydagi deklaratsiyalarni sanash (date_recorded bo'yicha filtrlash)
         return Contract.objects.filter(
             reciever=self,               # `self` - bu kompaniya
-            updated_at__month=month,      # `updated_at` bo'yicha oy filtr
-            updated_at__year=timezone.now().year,
+            date_recorded__month=month,      # `date_recorded` bo'yicha oy filtr
+            date_recorded__year=timezone.now().year,
         ).count()
     
     def dosmotr_count(self,month=None):
         if month is None:
             month = timezone.now().month
         
-        # Tanlangan oydagi deklaratsiyalarni sanash (updated_at bo'yicha filtrlash)
+        # Tanlangan oydagi deklaratsiyalarni sanash (leaving date bo'yicha filtrlash)
         return Dosmotr.objects.filter(
             reciever=self,               # `self` - bu kompaniya
-            updated_at__month=month,      # `updated_at` bo'yicha oy filtr
-            updated_at__year=timezone.now().year,
+            leaving_date__month=month,      # `leaving_date` bo'yicha oy filtr
+            leaving_date__year=timezone.now().year,
         ).count()
 
     class Meta:
         db_table = 'app_company'
-        verbose_name_plural = "Companies"
+        verbose_name_plural = "Kompaniyalar"
 
 
 class Declaration(BaseModel):
@@ -99,6 +99,7 @@ class Declaration(BaseModel):
     class Meta:
         db_table = 'app_declaration'
         ordering = ["-updated_at",]
+        verbose_name_plural = "Deklaratsiyalar"
 
 
 
@@ -112,8 +113,8 @@ def declaration_count(self, month=None):
     return Declaration.objects.filter(
         declarant=self,               # `self` - bu xodim (user)
         status=Declaration.Status.FINISHED,
-        updated_at__month=month,      # `updated_at` bo'yicha oy filtr
-        updated_at__year=timezone.now().year,
+        date_recorded__month=month,      # `date_recorded` bo'yicha oy filtr
+        date_recorded__year=timezone.now().year,
     ).count()
 
 # Methodni User modeliga qo'shamiz
@@ -136,6 +137,7 @@ class Contract(BaseModel):
     class Meta:
         db_table = 'app_contract'
         ordering = ["-updated_at",]
+        verbose_name_plural = "Kontraktlar"
 
 
 class Dosmotr(BaseModel):
@@ -153,3 +155,4 @@ class Dosmotr(BaseModel):
     class Meta:
         db_table = 'app_dosmotr'
         ordering = ["-updated_at",]
+        verbose_name_plural = "Dosmotrlar"
