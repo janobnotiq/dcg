@@ -16,8 +16,8 @@ class Command(BaseCommand):
 )
         print(declarations)
         for declaration in declarations:
-            if declaration.days_left % 10 != 0:
-                continue
+            # if declaration.days_left % 10 != 0:
+            #     continue
             
             try:
                 message = prepare_message(declaration)

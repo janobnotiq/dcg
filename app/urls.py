@@ -1,4 +1,5 @@
 from django.urls import path
+from django.shortcuts import render
 from .views import home_view
 from django.contrib.auth import views as auth_views
 from .views import logout_view, add_declaration, declaration_success_view\
@@ -47,3 +48,9 @@ urlpatterns = [
     path("company-dosmotr-report/<int:pk>/", CompanyDosmotrReportView.as_view(), name="company-dosmotr-report"),
     path("company-dosmotr-filter/<int:pk>/", CompanyDosmotrFilterView.as_view(), name="company-dosmotr-filter"),
 ]
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
+
+# 404 handlerni ro'yxatdan o'tkazish
+handler404 = 'app.urls.custom_404'

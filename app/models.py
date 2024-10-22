@@ -88,7 +88,7 @@ class Declaration(BaseModel):
     def days_left(self):
         
         today = timezone.now().date()
-        expected_day = self.date_recorded + timedelta(days=61)
+        expected_day = self.date_recorded + timedelta(days=60)
         return (expected_day - today).days
           
            

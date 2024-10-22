@@ -10,7 +10,8 @@ def send_message(message):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     payload = {
         'chat_id': CHAT_ID,
-        'text': message
+        'text': message,
+        'parse_mode': 'HTML'
     }
     response = requests.post(url, data=payload)
     if response.status_code == 200:
@@ -40,8 +41,10 @@ def prepare_message(declaration:Declaration) -> str:
     if not all([number_gtd, days_left]):
         raise ValueError
 
-    message = f"Hurmatli {first_name} {last_name}! @{username} \n \
-            Sizning {number_gtd} raqamli deklaratsiyangiz boshqa rejimga olib o'tilishi kerak.\n \
-                {declaration.days_left} kun qoldi!\n"
+    message = f"🙂 Hurmatli {first_name} {last_name}! @{username} \n\n\
+🚚 Sizning {number_gtd} raqamli deklaratsiyangiz boshqa rejimga olib o'tilishi kerak.\n\n\
+📆 <b>{declaration.days_left}</b> kun qoldi⏳⌛\n\n\
+🔗🔗🔗 Ushbu link orqali uni ko'rishingiz mumkin: http://127.0.0.1:8000/update-declaration/{declaration.pk}/ \n\n\
+Ishlarga rivoj😉"
     
     return message
