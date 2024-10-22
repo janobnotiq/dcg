@@ -147,7 +147,7 @@ class DeclarationUpdateView(LoginRequiredMixin,UpdateView):
     model = Declaration
     form_class = DeclarationForm
     template_name = "update-declaration.html"
-    success_url = reverse_lazy("my-declarations")
+    success_url = reverse_lazy("my_declarations")
 
     def get_queryset(self):
         return Declaration.objects.filter(declarant=self.request.user)
